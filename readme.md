@@ -16,22 +16,22 @@ The following knobs that can be configured:
 
 - python version
 - gunicorn
-- gevent / eventlet
+- gevent (todo) / eventlet
 - uvicorn
 - UvicornWorker
-- hypecorn
-- daphne
+- hypecorn (todo)
+- daphne (todo)
 - uvicorn WSGIMiddleware
 - django get_asgi_application
-- fast_api
-- SqlAlchemy 1.4 asyncio plugin
-- Tortoise ORM
-- GINO
+- fast_api (todo)
+- SqlAlchemy 1.4 asyncio plugin (todo)
+- Tortoise ORM (todo)
+- GINO (todo)
 - django ORM
 - django sync
 - django async
-- fastapi sync
-- fastapi async
+- fastapi sync (todo)
+- fastapi async (todo)
 
 ```bash
 docker-compose up

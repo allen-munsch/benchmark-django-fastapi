@@ -4,7 +4,7 @@ Feel free to open a PR if there is something missing, or if you'd like to see so
 
 ### what's this about?
 
-The purpose of the repo is to get a grasp on the state of various configuration setups, for **production ASGI python**, specifically migrating from django 2.2+ to django 3.2+, and layering in FastAPI.
+The purpose of the repo is to get a grasp on the state of various configuration setups, for **production ASGI django**, specifically migrating from django 2.2+ to django 3.2+, and layering in FastAPI.
 
 From what I can see it is possible to do this in various ways.
 

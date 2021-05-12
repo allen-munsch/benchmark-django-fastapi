@@ -1,6 +1,6 @@
-# ASGI python benchmarks
+# Django ASGI python benchmarks ( very rough )
 
-Feel free to open a PR if there is something missing.
+Feel free to open a PR if there is something missing, or if you'd like to see something tested.
 
 ### what's this about?
 

@@ -6,8 +6,6 @@ Feel free to open a PR if there is something missing.
 
 The purpose of the repo is to get a grasp on the state of various configuration setups, for **production ASGI python**, specifically migrating from django 2.2+ to django 3.2+, and layering in FastAPI.
 
-
-
 From what I can see it is possible to do this in various ways.
 
 However, I haven't been able to find any definitive answers on what might be a suitable configruation for a production environment.
@@ -59,6 +57,21 @@ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load
 
 
 Results:
+
+```
+uname -a
+Linux pop-os 5.8.0-7630-generic #32~1609193707~20.04~781bb80-Ubuntu SMP Tue Jan 5 21:23:50 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+
+cat /proc/cpuinfo
+model name	: Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz
+cores 12
+
+cat /proc/meminfo 
+MemTotal:       32732864 kB
+MemFree:         2180340 kB
+MemAvailable:   20016776 kB
+
+```
 
 ```
 export SERVED_BY=gunicorn-eventlet

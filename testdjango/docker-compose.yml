@@ -1,0 +1,101 @@
+version: "3"
+
+networks:
+  test-this-net:
+    driver: bridge
+
+volumes:
+  postgres:
+  web:
+  influxdb-storage:
+  chronograf-storage:
+  grafana-storage:
+
+services:
+  web:
+    image: "testdjango/web:${PYTHON_VERSION}"
+    command: ["./docker/web/docker-${SERVED_BY}-entrypoint.sh"]
+    volumes:
+      - ./:/app
+    ports:
+      - 8000:8000
+    networks:
+      - test-this-net
+    environment:
+      - WAIT_HOSTS=postgres:5432
+      - DATABASE_URL_HOST=postgres
+    depends_on:
+      - postgres
+  postgres:
+    environment:
+      POSTGRES_USER: testdb
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: testdb
+    image: postgres:latest
+    command: postgres -c shared_buffers=2GB -c max_connections=1600
+    ports:
+      - 5432:5432
+    networks:
+      - test-this-net
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  load-test:
+    profiles:
+      - load-test-run
+    image: "loadimpact/k6"
+    # --http-debug=\"full\"
+    command: "run /app/load_tests/k6_test.js"
+    networks:
+      - test-this-net
+    volumes:
+      - ./:/app
+    environment:
+      - test_email=${test_email}
+      - test_user_password=${test_user_password}
+      - test_review_app_url=${test_review_app_url}
+  influxdb:
+    profiles:
+      - load-test
+    image: influxdb:latest
+    networks:
+      - test-this-net
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+  chronograf:
+    profiles:
+      - load-test
+    image: chronograf:latest
+    networks:
+      - test-this-net
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - chronograf-storage:/var/lib/chronograf
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
+      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
+  grafana:
+    profiles:
+      - load-test
+    networks:
+      - test-this-net
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+      - ./docker/local/grafana-provisioning/:/etc/grafana/provisioning
+    depends_on:
+      - influxdb
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}

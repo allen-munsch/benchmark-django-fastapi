@@ -1,0 +1,26 @@
+asgiref==3.3.4
+click==7.1.2
+Cython==0.29.23
+Django==3.2
+django-click==2.2.0
+-e git+https://github.com/jordaneremieff/djantic.git@main#egg=djantic
+dnspython==1.16.0
+eventlet==0.30.2
+fastapi==0.64.0
+greenlet==1.1.0
+gunicorn==20.1.0
+h11==0.12.0
+httptools==0.1.2
+psycopg2==2.8.6
+pydantic==1.8.1
+python-dotenv==0.17.1
+pytz==2021.1
+PyYAML==5.4.1
+six==1.16.0
+sqlparse==0.4.1
+starlette==0.13.6
+typing-extensions==3.10.0.0
+uvicorn==0.13.4
+uvloop==0.15.2
+watchgod==0.7
+websockets==8.1

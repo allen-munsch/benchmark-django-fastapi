@@ -50,6 +50,7 @@ export SERVED_BY=gunicorn-eventlet
 docker-compose up
 psql postgres://testdb:password@127.0.0.1:5432/ -c "create database testdb;"
 docker-compose exec web python ./manage.py migrate
+docker-compose exec web python ./manage.py populate_test_db
 
 docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
 # create the db

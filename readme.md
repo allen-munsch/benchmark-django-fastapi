@@ -43,7 +43,8 @@ python -m venv .venv
 pip install -r requirements.txt
 
 export PYTHON_VERSION={3.6.13 | 3.8.10}
-export SERVED_BY={gunicorn-eventlet | gunicorn-uvicornworker | uvicorn}
+export SERVED_BY={gunicorn-eventlet | gunicorn-uvicornworker | uvicorn | asgi-with-static | uvicorn-wsgimiddleware-with-cling}
+
 docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/$PYTHON_VERSION.Dockerfile" ./
 export PYTHON_VERSION=3.8.10 
 export SERVED_BY=gunicorn-eventlet
@@ -168,5 +169,120 @@ default ✓ [======================================] 00/10 VUs  1m0s
      iterations.....................: 661     10.929689/s
      vus............................: 9       min=1  max=9 
      vus_max........................: 10      min=10 max=10
+
+```
+
+```
+export SERVED_BY=uvicorn-wsgimiddleware-with-cling
+docker-compose up
+
+07:02:45 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+Creating testdjango_load-test_run ... done
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: /app/load_tests/k6_test.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 10 max VUs, 1m30s max duration (incl. graceful stop):
+           * default: Up to 10 looping VUs for 1m0s over 1 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (1m00.4s), 00/10 VUs, 598 complete and 0 interrupted iterations
+default ✓ [======================================] 00/10 VUs  1m0s
+
+     ✓ has status 200
+     ✓ has cookie 'csrftoken'
+     ✓ status is 200
+     ✓ http://web:8000/api/clowncollege/: status is 200
+     ✓ http://web:8000/api/clowncollege/: count != null
+     ✓ http://web:8000/api/clowncollege/: next url exists
+     ✓ http://web:8000/api/clowncollege/: has results
+     ✓ http://web:8000/api/troupe/: status is 200
+     ✓ http://web:8000/api/troupe/: count != null
+     ✓ http://web:8000/api/troupe/: next url exists
+     ✓ http://web:8000/api/troupe/: has results
+
+     checks.........................: 100.00% ✓ 6578 ✗ 0   
+     data_received..................: 6.6 MB  109 kB/s
+     data_sent......................: 829 kB  14 kB/s
+     http_req_blocked...............: avg=3.47µs   min=1.04µs  med=2.17µs   max=603.08µs p(90)=3.91µs   p(95)=5.51µs  
+     http_req_connecting............: avg=537ns    min=0s      med=0s       max=272.18µs p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=100.91ms min=10.17ms med=71.11ms  max=832.66ms p(90)=234.24ms p(95)=300.93ms
+       { expected_response:true }...: avg=100.91ms min=10.17ms med=71.11ms  max=832.66ms p(90)=234.24ms p(95)=300.93ms
+     http_req_failed................: 0.00%   ✓ 0    ✗ 2990
+     http_req_receiving.............: avg=52.28µs  min=18.16µs med=46.56µs  max=869.57µs p(90)=75.8µs   p(95)=92.83µs 
+     http_req_sending...............: avg=15.83µs  min=6.27µs  med=13.4µs   max=433.59µs p(90)=25.65µs  p(95)=32.36µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=100.84ms min=10.12ms med=71.04ms  max=832.55ms p(90)=234.18ms p(95)=300.81ms
+     http_reqs......................: 2990    49.522578/s
+     iteration_duration.............: avg=505.37ms min=81.94ms med=376.82ms max=1.89s    p(90)=1.01s    p(95)=1.18s   
+     iterations.....................: 598     9.904516/s
+     vus............................: 9       min=1  max=9 
+     vus_max........................: 10      min=10 max=10
+
+```
+
+```
+
+export SERVED_BY=gunicorn-uvicornworker
+echo test_try_python_async=true >> docker/grafana/.env
+
+
+07:51:57 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+Creating testdjango_load-test_run ... done
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: /app/load_tests/k6_test.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 10 max VUs, 1m30s max duration (incl. graceful stop):
+           * default: Up to 10 looping VUs for 1m0s over 1 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (1m00.6s), 00/10 VUs, 681 complete and 0 interrupted iterations
+default ✓ [======================================] 00/10 VUs  1m0s
+
+     ✓ has status 200
+     ✓ has cookie 'csrftoken'
+     ✓ status is 200
+     ✓ http://web:8000/async_api/clowncollege/: status is 200
+     ✓ http://web:8000/async_api/clowncollege/: count != null
+     ✓ http://web:8000/async_api/clowncollege/: next url exists
+     ✓ http://web:8000/async_api/clowncollege/: has results
+     ✓ http://web:8000/async_api/troupe/: status is 200
+     ✓ http://web:8000/async_api/troupe/: count != null
+     ✓ http://web:8000/async_api/troupe/: next url exists
+     ✓ http://web:8000/async_api/troupe/: has results
+
+     checks.........................: 100.00% ✓ 7491 ✗ 0   
+     data_received..................: 7.5 MB  123 kB/s
+     data_sent......................: 953 kB  16 kB/s
+     http_req_blocked...............: avg=2.64µs   min=1.02µs  med=1.79µs   max=597.15µs p(90)=2.51µs   p(95)=2.93µs  
+     http_req_connecting............: avg=396ns    min=0s      med=0s       max=229.79µs p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=89.14ms  min=12.14ms med=84.2ms   max=250.6ms  p(90)=155.36ms p(95)=194.25ms
+       { expected_response:true }...: avg=89.14ms  min=12.14ms med=84.2ms   max=250.6ms  p(90)=155.36ms p(95)=194.25ms
+     http_req_failed................: 0.00%   ✓ 0    ✗ 3405
+     http_req_receiving.............: avg=42.75µs  min=18.51µs med=39.51µs  max=309.34µs p(90)=66.05µs  p(95)=70.84µs 
+     http_req_sending...............: avg=13.05µs  min=6.01µs  med=11µs     max=78.29µs  p(90)=23.61µs  p(95)=29.31µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=89.08ms  min=12.07ms med=84.15ms  max=250.55ms p(90)=155.31ms p(95)=194.2ms 
+     http_reqs......................: 3405    56.229413/s
+     iteration_duration.............: avg=446.37ms min=92.25ms med=439.46ms max=792.3ms  p(90)=762.32ms p(95)=774.14ms
+     iterations.....................: 681     11.245883/s
+     vus............................: 9       min=1  max=9 
+     vus_max........................: 10      min=10 max=10
+
 
 ```

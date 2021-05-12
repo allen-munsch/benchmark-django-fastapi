@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/clowncollege/', views.clowncollege),
     path('api/troupe/', views.troupe),
+    path('async_api/clowncollege/', views.async_clowncollege),
+    path('async_api/troupe/', views.async_troupe),
 ]

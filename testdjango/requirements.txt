@@ -3,6 +3,7 @@ click==7.1.2
 Cython==0.29.23
 Django==3.2
 django-click==2.2.0
+dj-static==0.0.6
 -e git+https://github.com/jordaneremieff/djantic.git@main#egg=djantic
 dnspython==1.16.0
 eventlet==0.30.2

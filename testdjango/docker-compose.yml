@@ -53,6 +53,7 @@ services:
       - test_email=${test_email}
       - test_user_password=${test_user_password}
       - test_review_app_url=${test_review_app_url}
+      - test_try_python_async=${test_try_python_async}
   influxdb:
     profiles:
       - load-test

@@ -13,9 +13,11 @@ import encoding from "k6/encoding";
 import http from "k6/http";
 import { check, fail } from "k6";
 
+// these can be set in docker/grafana/.env and passed along when the test is run
 const email = __ENV.test_email;
 const password = __ENV.test_user_password;
 const reviewAppUrl = __ENV.test_review_app_url ? __ENV.test_review_app_url.replace(/\/+$/, "") : null;
+const isAsyncEndpoint = __ENV.test_try_python_async;
 
 email ||
 fail("[__ENV.test_email is not defined, please add it to the 'load-test' environment in the docker-compose file]");
@@ -53,8 +55,8 @@ export let options = {
 export default function () {
     let urlPart = reviewAppUrl || "http://web:8000";
     const loginUrl = `${urlPart}/admin/login/`;
-    const collegeApi = `${urlPart}/api/clowncollege/`;
-    const troupeApi = `${urlPart}/api/troupe/`;
+    const collegeApi = `${urlPart}/${isAsyncEndpoint ? "async_" : ""}api/clowncollege/`;
+    const troupeApi = `${urlPart}/${isAsyncEndpoint ? "async_" : ""}api/troupe/`;
     let res1 = http.get(loginUrl);
     console.debug(res1);
     let csrf = res1.cookies.csrftoken[0].value;

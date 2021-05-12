@@ -43,7 +43,7 @@ services:
     profiles:
       - load-test-run
     image: "loadimpact/k6"
-    # --http-debug=\"full\"
+#    command: "run --http-debug=\"full\" /app/load_tests/k6_test.js"
     command: "run /app/load_tests/k6_test.js"
     networks:
       - test-this-net

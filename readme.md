@@ -31,28 +31,29 @@ The following knobs that can be configured:
 - fastapi sync (todo)
 - fastapi async (todo)
 
-```bash
-docker-compose up
 
+### setup and run
+
+```bash
 pyenv install 3.8.10
 pyenv local 3.8.10
 python -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
-
 export PYTHON_VERSION={3.6.13 | 3.8.10}
 export SERVED_BY={gunicorn-eventlet | gunicorn-uvicornworker | uvicorn | asgi-with-static | uvicorn-wsgimiddleware-with-cling}
 
+
 docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/$PYTHON_VERSION.Dockerfile" ./
+
 export PYTHON_VERSION=3.8.10 
 export SERVED_BY=gunicorn-eventlet
 docker-compose up
-psql postgres://testdb:password@127.0.0.1:5432/ -c "create database testdb;"
-docker-compose exec web python ./manage.py migrate
-docker-compose exec web python ./manage.py populate_test_db
+
+docker-compose exec web bash -c ". /venv/bin/activate && python manage.py migrate"
+docker-compose exec web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
 
 docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
-# create the db
 ```
 
 Where are the knobs at the moment?
@@ -61,7 +62,16 @@ Where are the knobs at the moment?
 - https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango/testdjango
 - https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango/docker/grafana/.env
 
-Results:
+
+### uses k6
+
+See load_tests/
+
+- does a GET request to django admin/login
+- sends a POST login request
+- sends 2 GET api requests and returns a json responses of serialized data
+
+### Results:
 
 ```
 uname -a

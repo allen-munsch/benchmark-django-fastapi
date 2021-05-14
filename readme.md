@@ -58,9 +58,9 @@ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load
 
 Where are the knobs at the moment?
 
-- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango/docker/web
-- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango/testdjango
-- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango/docker/grafana/.env
+- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/docker/web
+- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango
+- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/docker/grafana/.env
 
 
 ### uses k6

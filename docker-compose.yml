@@ -24,6 +24,7 @@ services:
     environment:
       - WAIT_HOSTS=postgres:5432
       - DATABASE_URL_HOST=postgres
+      - WITH_APP=${SERVED_BY}
     depends_on:
       - postgres
   postgres:

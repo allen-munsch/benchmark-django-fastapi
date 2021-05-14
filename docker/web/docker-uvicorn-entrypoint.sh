@@ -2,4 +2,5 @@
 set -e
 . /venv/bin/activate
 
-/wait && uvicorn testdjango.asgi:application
+# errors out from lifespan, then ASGI_APPLICATION, then not able to find routing
+/wait && uvicorn --lifespan on testdjango.asgi_from_channels:application

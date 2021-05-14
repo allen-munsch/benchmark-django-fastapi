@@ -314,3 +314,115 @@ default ✓ [======================================] 00/10 VUs  1m0s
 
 
 ```
+
+```
+SERVED_BY=asgi-with-static
+
+07:51:46 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+WARNING: The PYTHON_VERSION variable is not set. Defaulting to a blank string.
+WARNING: The WITH_APP variable is not set. Defaulting to a blank string.
+Creating benchmark-django-fastapi_load-test_run ... done
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: /app/load_tests/k6_test.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 10 max VUs, 1m30s max duration (incl. graceful stop):
+           * default: Up to 10 looping VUs for 1m0s over 1 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (1m00.6s), 00/10 VUs, 703 complete and 0 interrupted iterations
+default ✓ [======================================] 00/10 VUs  1m0s
+
+     ✓ has status 200
+     ✓ has cookie 'csrftoken'
+     ✓ status is 200
+     ✓ http://web:8000/api/clowncollege/: status is 200
+     ✓ http://web:8000/api/clowncollege/: count != null
+     ✓ http://web:8000/api/clowncollege/: next url exists
+     ✓ http://web:8000/api/clowncollege/: has results
+     ✓ http://web:8000/api/troupe/: status is 200
+     ✓ http://web:8000/api/troupe/: count != null
+     ✓ http://web:8000/api/troupe/: next url exists
+     ✓ http://web:8000/api/troupe/: has results
+
+     checks.........................: 100.00% ✓ 7733 ✗ 0   
+     data_received..................: 7.5 MB  124 kB/s
+     data_sent......................: 975 kB  16 kB/s
+     http_req_blocked...............: avg=2.6µs    min=1µs     med=1.84µs   max=393.38µs p(90)=2.73µs   p(95)=3.09µs  
+     http_req_connecting............: avg=360ns    min=0s      med=0s       max=201µs    p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=86.17ms  min=12.17ms med=86.53ms  max=192.28ms p(90)=146.47ms p(95)=157.95ms
+       { expected_response:true }...: avg=86.17ms  min=12.17ms med=86.53ms  max=192.28ms p(90)=146.47ms p(95)=157.95ms
+     http_req_failed................: 0.00%   ✓ 0    ✗ 3515
+     http_req_receiving.............: avg=42.54µs  min=19.38µs med=39.78µs  max=364.05µs p(90)=62.46µs  p(95)=69.7µs  
+     http_req_sending...............: avg=12.62µs  min=6.14µs  med=11.06µs  max=143.57µs p(90)=17.45µs  p(95)=25.32µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=86.12ms  min=12.11ms med=86.5ms   max=192.2ms  p(90)=146.43ms p(95)=157.89ms
+     http_reqs......................: 3515    58.047508/s
+     iteration_duration.............: avg=431.52ms min=86.16ms med=434.45ms max=763.54ms p(90)=731.52ms p(95)=747.95ms
+     iterations.....................: 703     11.609502/s
+     vus............................: 9       min=1  max=9 
+     vus_max........................: 10      min=10 max=10
+
+```
+
+```
+export SERVED_BY=fastapi-with-django-mounted-asgi
+
+08:01:52 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+WARNING: The WITH_APP variable is not set. Defaulting to a blank string.
+Creating benchmark-django-fastapi_load-test_run ... done
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: /app/load_tests/k6_test.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 10 max VUs, 1m30s max duration (incl. graceful stop):
+           * default: Up to 10 looping VUs for 1m0s over 1 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (1m00.4s), 00/10 VUs, 681 complete and 0 interrupted iterations
+default ✓ [======================================] 00/10 VUs  1m0s
+
+     ✓ has status 200
+     ✓ has cookie 'csrftoken'
+     ✓ status is 200
+     ✓ http://web:8000/api/clowncollege/: status is 200
+     ✓ http://web:8000/api/clowncollege/: count != null
+     ✓ http://web:8000/api/clowncollege/: next url exists
+     ✓ http://web:8000/api/clowncollege/: has results
+     ✓ http://web:8000/api/troupe/: status is 200
+     ✓ http://web:8000/api/troupe/: count != null
+     ✓ http://web:8000/api/troupe/: next url exists
+     ✓ http://web:8000/api/troupe/: has results
+
+     checks.........................: 100.00% ✓ 7491 ✗ 0   
+     data_received..................: 7.3 MB  120 kB/s
+     data_sent......................: 944 kB  16 kB/s
+     http_req_blocked...............: avg=2.67µs   min=1.08µs  med=1.92µs   max=463.33µs p(90)=2.91µs   p(95)=3.25µs  
+     http_req_connecting............: avg=401ns    min=0s      med=0s       max=223.62µs p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=88.66ms  min=12.5ms  med=89.4ms   max=196.68ms p(90)=151.69ms p(95)=161.78ms
+       { expected_response:true }...: avg=88.66ms  min=12.5ms  med=89.4ms   max=196.68ms p(90)=151.69ms p(95)=161.78ms
+     http_req_failed................: 0.00%   ✓ 0    ✗ 3405
+     http_req_receiving.............: avg=42.29µs  min=19.74µs med=40.04µs  max=393.34µs p(90)=61.48µs  p(95)=68.14µs 
+     http_req_sending...............: avg=12.82µs  min=6.2µs   med=11.62µs  max=146.93µs p(90)=17.69µs  p(95)=20.35µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=88.6ms   min=12.44ms med=89.35ms  max=196.63ms p(90)=151.61ms p(95)=161.74ms
+     http_reqs......................: 3405    56.330272/s
+     iteration_duration.............: avg=443.96ms min=86.66ms med=434.47ms max=813.16ms p(90)=740.18ms p(95)=762.91ms
+     iterations.....................: 681     11.266054/s
+     vus............................: 9       min=1  max=9 
+     vus_max........................: 10      min=10 max=10
+```

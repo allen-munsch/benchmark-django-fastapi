@@ -29,7 +29,7 @@ fail(
 
 let stageOptions = {
     "easy": [
-        { duration: "1m", target: 10 }, // below normal load
+        { duration: "1s", target: 10 }, // below normal load
     ],
     "medium": [
         { duration: "1m", target: 50 },
@@ -132,7 +132,7 @@ export function handleSummary(data) {
     return {
         // 'stdout': JSON.stringify(data, null, 2)
         // 'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
-        './results.txt': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
+        '/app/test_results/results.txt': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
     }
 
 }

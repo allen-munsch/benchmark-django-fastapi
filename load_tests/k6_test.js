@@ -29,7 +29,7 @@ fail(
 
 let stageOptions = {
     "easy": [
-        { duration: "1s", target: 10 }, // below normal load
+        { duration: "1m", target: 10 }, // below normal load
     ],
     "medium": [
         { duration: "1m", target: 50 },

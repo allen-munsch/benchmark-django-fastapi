@@ -524,3 +524,12 @@ default ✓ [======================================] 00/10 VUs  1m0s
      vus............................: 9       min=1   max=9 
      vus_max........................: 10      min=10  max=10
 ```
+
+
+### optionally
+
+- configure influxdb, grafana, and cronograf
+- show grafana dashboards of test runs 
+- point the test runner at a `test_review_app_url` and run the test against that app
+    - after large enough instances network bandwidth quickly becomes the bottleneck
+- can do distributed testing : https://k6.io/blog/running-distributed-tests-on-k8s/

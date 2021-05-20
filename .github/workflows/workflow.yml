@@ -32,9 +32,11 @@ jobs:
         run: docker-compose --env-file ./env.vars up -d
       - name: Check running containers
         run: docker ps -a
-      - name: setup the database
+      - name: migrate database
         run: |
           docker-compose exec -T web bash -c ". /venv/bin/activate && python manage.py migrate"
+      - name: populate the database
+        run: |
           docker-compose exec -T web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
       - name: make the test_results folder writeable
         run: chmod 777 test_results/
@@ -44,6 +46,6 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: results
-          path: test_results/results.txt
+          path: test_results/results.${{ matrix.SERVED_BY }}.${{ matrix.PYTHON_VERSION }}.txt
       - name: show results
         run: cat test_results/results.txt

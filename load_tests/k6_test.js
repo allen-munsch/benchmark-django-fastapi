@@ -29,7 +29,7 @@ fail(
 
 let stageOptions = {
     "easy": [
-        { duration: "1m", target: 10 }, // below normal load
+        { duration: "1s", target: 10 }, // below normal load
     ],
     "medium": [
         { duration: "1m", target: 50 },
@@ -129,10 +129,9 @@ export default function () {
 import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 
 export function handleSummary(data) {
-    return {
-        // 'stdout': JSON.stringify(data, null, 2)
+    let resultObj = {
         'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
-        '/app/test_results/results.txt': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
-    }
-
+    };
+    resultsObj[`/app/test_results/results.${__ENV.SERVED_BY}.${__ENV.PYTHON_VERSION}.txt`] = JSON.stringify(data, null, 2)
+    return resultObj
 }

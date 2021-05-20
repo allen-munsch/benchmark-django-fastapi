@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the django image
-        run: docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/Dockerfile" ./
+        run: PYTHON_VERSION=${{ matrix.PYTHON_VERSION }} docker build -t "testdjango/web:${{ matrix.PYTHON_VERSION }}" -f "./docker/web/Dockerfile" ./
       - name: Build the docker-compose stack
         run: docker-compose -f docker-compose.yml --env-file env.vars -d up
       - name: Check running containers

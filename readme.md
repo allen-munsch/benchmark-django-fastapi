@@ -426,3 +426,60 @@ default ✓ [======================================] 00/10 VUs  1m0s
      vus............................: 9       min=1  max=9 
      vus_max........................: 10      min=10 max=10
 ```
+
+```
+export PYTHON_VERSION=3.8.10
+export SERVED_BY=asgi-with-static-gunicorn-w18
+
+08:03:12 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+WARNING: The PYTHON_VERSION variable is not set. Defaulting to a blank string.
+WARNING: The SERVED_BY variable is not set. Defaulting to a blank string.
+Creating benchmark-django-fastapi_load-test_run ... done
+
+          /\      |‾‾| /‾‾/   /‾‾/   
+     /\  /  \     |  |/  /   /  /    
+    /  \/    \    |     (   /   ‾‾\  
+   /          \   |  |\  \ |  (‾)  | 
+  / __________ \  |__| \__\ \_____/ .io
+
+  execution: local
+     script: /app/load_tests/k6_test.js
+     output: -
+
+  scenarios: (100.00%) 1 scenario, 10 max VUs, 1m30s max duration (incl. graceful stop):
+           * default: Up to 10 looping VUs for 1m0s over 1 stages (gracefulRampDown: 30s, gracefulStop: 30s)
+
+
+running (1m00.4s), 00/10 VUs, 1670 complete and 0 interrupted iterations
+default ✓ [======================================] 00/10 VUs  1m0s
+
+     ✓ has status 200
+     ✓ has cookie 'csrftoken'
+     ✓ status is 200
+     ✓ http://web:8000/api/clowncollege/: status is 200
+     ✓ http://web:8000/api/clowncollege/: count != null
+     ✓ http://web:8000/api/clowncollege/: next url exists
+     ✓ http://web:8000/api/clowncollege/: has results
+     ✓ http://web:8000/api/troupe/: status is 200
+     ✓ http://web:8000/api/troupe/: count != null
+     ✓ http://web:8000/api/troupe/: next url exists
+     ✓ http://web:8000/api/troupe/: has results
+
+     checks.........................: 100.00% ✓ 18370 ✗ 0   
+     data_received..................: 18 MB   295 kB/s
+     data_sent......................: 2.3 MB  38 kB/s
+     http_req_blocked...............: avg=2.74µs   min=935ns   med=2.2µs    max=1.21ms   p(90)=3.18µs   p(95)=3.44µs  
+     http_req_connecting............: avg=195ns    min=0s      med=0s       max=294.44µs p(90)=0s       p(95)=0s      
+     http_req_duration..............: avg=35.99ms  min=12.25ms med=19.99ms  max=174.5ms  p(90)=93.95ms  p(95)=116.32ms
+       { expected_response:true }...: avg=35.99ms  min=12.25ms med=19.99ms  max=174.5ms  p(90)=93.95ms  p(95)=116.32ms
+     http_req_failed................: 0.00%   ✓ 0     ✗ 8350
+     http_req_receiving.............: avg=48.18µs  min=20.01µs med=47.17µs  max=317.47µs p(90)=62.38µs  p(95)=66.43µs 
+     http_req_sending...............: avg=14.34µs  min=6.29µs  med=14.02µs  max=105.53µs p(90)=18.82µs  p(95)=20.54µs 
+     http_req_tls_handshaking.......: avg=0s       min=0s      med=0s       max=0s       p(90)=0s       p(95)=0s      
+     http_req_waiting...............: avg=35.92ms  min=12.16ms med=19.93ms  max=174.44ms p(90)=93.9ms   p(95)=116.27ms
+     http_reqs......................: 8350    138.306779/s
+     iteration_duration.............: avg=180.68ms min=85.65ms med=101.01ms max=718.39ms p(90)=467.68ms p(95)=574.48ms
+     iterations.....................: 1670    27.661356/s
+     vus............................: 9       min=1   max=9 
+     vus_max........................: 10      min=10  max=10
+```

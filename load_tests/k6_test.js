@@ -18,6 +18,7 @@ const email = __ENV.test_email;
 const password = __ENV.test_user_password;
 const reviewAppUrl = __ENV.test_review_app_url ? __ENV.test_review_app_url.replace(/\/+$/, "") : null;
 const isAsyncEndpoint = __ENV.test_try_python_async;
+const testScenario = __ENV.test_scenario_option || "easy";
 
 email ||
 fail("[__ENV.test_email is not defined, please add it to the 'load-test' environment in the docker-compose file]");
@@ -26,26 +27,38 @@ fail(
     "[__ENV.test_user_password is not defined, please add it to the 'load-test' environment in the docker-compose file]"
 );
 
-export let options = {
-    stages: [
-        { duration: "1m", target: 10 }, // below normal load
-        // { duration: "1m", target: 100 },
-        // { duration: "1m", target: 120 }, // normal load
-        // { duration: "1m", target: 140 },
-        // { duration: "1m", target: 160 }, // around the breaking point
-        // { duration: "1m", target: 180 },
-        // { duration: "1m", target: 0 }, // scale down. Recovery stage.
+let stageOptions = {
+    "easy": [
+        { duration: "1m", target: 400 }, // below normal load
     ],
-    // stages: [
-    //   { duration: "1m", target: 25 }, // below normal load
-    //   { duration: "1m", target: 100 },
-    //   { duration: "1m", target: 150 }, // normal load
-    //   { duration: "1m", target: 300 },
-    //   { duration: "1m", target: 600 }, // around the breaking point
-    //   { duration: "1m", target: 900 },
-    //   { duration: "1m", target: 1200 },
-    //   { duration: "1m", target: 0 }, // scale down. Recovery stage.
-    // ],
+    "medium": [
+        { duration: "1m", target: 50 },
+        { duration: "1m", target: 60 },
+        { duration: "1m", target: 70 },
+        { duration: "1m", target: 80 },
+        { duration: "1m", target: 90 },
+        { duration: "1m", target: 0 },
+    ],
+    "medium-large": [
+        { duration: "1m", target: 100 },
+        { duration: "1m", target: 120 }, // normal peak load
+        { duration: "1m", target: 140 },
+        { duration: "1m", target: 160 }, // around the breaking point
+        { duration: "1m", target: 180 },
+        { duration: "1m", target: 0 }, // scale down. Recovery stage.
+    ],
+    "laptop-heater": [
+        { duration: "1m", target: 200 },
+        { duration: "1m", target: 500 },
+        { duration: "1m", target: 700 },
+        { duration: "1m", target: 900 },
+        { duration: "1m", target: 1100 },
+        { duration: "1m", target: 0 },
+    ]
+}
+
+export let options = {
+    stages: stageOptions[testScenario],
     // thresholds: {
     //   http_req_duration: ['p(99)<1500'], // 99% of requests must complete below 1.5s
     //   'logged in successfully': ['p(99)<1500'], // 99% of requests must complete below 1.5s

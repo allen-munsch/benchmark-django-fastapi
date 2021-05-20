@@ -35,6 +35,9 @@ The following knobs that can be configured:
 - fastapi sync (todo)
 - fastapi async (todo)
 
+### tldr
+
+Look at the artifacts zip of a test run: https://github.com/allen-munsch/benchmark-django-fastapi/actions
 
 ### setup
 

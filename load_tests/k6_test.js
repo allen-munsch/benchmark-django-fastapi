@@ -132,6 +132,6 @@ export function handleSummary(data) {
     let resultObj = {
         'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
     };
-    resultsObj[`/app/test_results/results.${__ENV.SERVED_BY}.${__ENV.PYTHON_VERSION}.txt`] = JSON.stringify(data, null, 2)
+    resultObj[`/app/test_results/results.${__ENV.SERVED_BY}.${__ENV.PYTHON_VERSION}.txt`] = JSON.stringify(data, null, 2)
     return resultObj
 }

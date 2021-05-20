@@ -48,4 +48,4 @@ jobs:
           name: results
           path: test_results/results.${{ matrix.SERVED_BY }}.${{ matrix.PYTHON_VERSION }}.txt
       - name: show results
-        run: cat test_results/results.txt
+        run: cat test_results/results.${{ matrix.SERVED_BY }}.${{ matrix.PYTHON_VERSION }}.txt

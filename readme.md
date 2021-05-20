@@ -1,6 +1,6 @@
 # Django ASGI python benchmarks ( very rough )
 
-![Test Runs](https://github.com/allen-munsch/benchmark-django-fastapi/actions/workflows/workflow.yml/badge.svg?branch=main)[1]
+[![Test Runs](https://github.com/allen-munsch/benchmark-django-fastapi/actions/workflows/workflow.yml/badge.svg?branch=main)][1]
 
 [1]: https://github.com/allen-munsch/benchmark-django-fastapi/actions/
 

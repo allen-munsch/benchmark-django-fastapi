@@ -131,7 +131,8 @@ import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
 export function handleSummary(data) {
     return {
         // 'stdout': JSON.stringify(data, null, 2)
-        'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
+        // 'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
+        'results.txt': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
     }
 
 }

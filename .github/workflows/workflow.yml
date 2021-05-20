@@ -34,6 +34,11 @@ jobs:
         run: docker ps -a
       - name: Run test suite
         run: |
-          docker-compose exec web bash -c ". /venv/bin/activate && python manage.py migrate"
-          docker-compose exec web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
+          docker-compose exec -T web bash -c ". /venv/bin/activate && python manage.py migrate"
+          docker-compose exec -T web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
           docker-compose --env-file ./env.vars --profile load-test-run run -T load-test
+      - name: show results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: results.txt

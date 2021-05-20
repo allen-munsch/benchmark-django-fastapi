@@ -29,7 +29,7 @@ fail(
 
 let stageOptions = {
     "easy": [
-        { duration: "1m", target: 400 }, // below normal load
+        { duration: "1m", target: 10 }, // below normal load
     ],
     "medium": [
         { duration: "1m", target: 50 },
@@ -121,5 +121,17 @@ export default function () {
 
     let res4 = http.get(troupeApi, options);
     check(res4, apiChecks(troupeApi));
+
+}
+
+
+// These are still very much WIP and untested, but you can use them as is or write your own!
+import { textSummary } from 'https://jslib.k6.io/k6-summary/0.0.1/index.js';
+
+export function handleSummary(data) {
+    return {
+        // 'stdout': JSON.stringify(data, null, 2)
+        'stdout': textSummary(data, { indent: ' ', enableColors: true}), // Show the text summary to stdout...
+    }
 
 }

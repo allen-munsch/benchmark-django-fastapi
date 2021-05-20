@@ -36,4 +36,4 @@ jobs:
         run: |
           docker-compose exec web bash -c ". /venv/bin/activate && python manage.py migrate"
           docker-compose exec web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
-          docker-compose --env-file ./env.vars --profile load-test-run run load-test
+          docker-compose --env-file ./env.vars --profile load-test-run run -T load-test

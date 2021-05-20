@@ -42,3 +42,4 @@ jobs:
         with:
           name: results
           path: results.txt
+        run: cat results.txt

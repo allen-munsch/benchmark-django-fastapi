@@ -13,7 +13,7 @@ import encoding from "k6/encoding";
 import http from "k6/http";
 import { check, fail } from "k6";
 
-// these can be set in docker/grafana/.env and passed along when the test is run
+// these can be set in ./env.vars and passed along when the test is run
 const email = __ENV.test_email;
 const password = __ENV.test_user_password;
 const reviewAppUrl = __ENV.test_review_app_url ? __ENV.test_review_app_url.replace(/\/+$/, "") : null;

@@ -36,5 +36,14 @@ jobs:
         run: |
           docker-compose exec -T web bash -c ". /venv/bin/activate && python manage.py migrate"
           docker-compose exec -T web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
+      - name: make the test_results folder writeable
+        run: chmod 777 test_results/
       - name: run the test
         run: docker-compose --env-file ./env.vars --profile load-test-run run -T load-test
+      - name: store results
+        uses: actions/upload-artifact@v2
+        with:
+          name: results
+          path: test_results/results.txt
+      - name: show results
+        run: cat test_results/results.txt

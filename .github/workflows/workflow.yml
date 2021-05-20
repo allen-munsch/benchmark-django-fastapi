@@ -29,12 +29,11 @@ jobs:
           -f "./docker/web/Dockerfile" \
           --build-arg PYTHON_VERSION=${{ matrix.PYTHON_VERSION }} ./
       - name: Build the docker-compose stack
-        run: docker-compose --env-file ./env.vars -d up
+        run: docker-compose --env-file ./env.vars up -d
       - name: Check running containers
         run: docker ps -a
       - name: Run test suite
         run: |
-          docker-compose --env-file ./env.vars up -d
           docker-compose exec web bash -c ". /venv/bin/activate && python manage.py migrate"
           docker-compose exec web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
           docker-compose --env-file ./env.vars --profile load-test-run run load-test

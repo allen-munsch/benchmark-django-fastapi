@@ -59,7 +59,10 @@ SERVED_BY=asgi-with-static-gunicorn-w18
 
 Build the django container:
 ```
-export $(grep -v '^#' ./env.vars | xargs) && docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/Dockerfile" ./
+export $(grep -v '^#' ./env.vars | xargs) && docker build \
+-t "testdjango/web:$PYTHON_VERSION" \
+--build-arg PYTHON_VERSION=$PYTHON_VERSION \
+-f "./docker/web/Dockerfile" ./
 ```
 
 Start the environment, and migrate the dbs:

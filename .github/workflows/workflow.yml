@@ -1,0 +1,35 @@
+name: RUN THE TESTS?
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        PYTHON_VERSION: [3.6.13, 3.8.10]
+        SERVED_BY: [
+            "uvicorn-wsgimiddleware-with-cling",
+            "gunicorn-eventlet",
+            "asgi-with-static",
+            "gunicorn-gevent",
+            "fastapi-with-django-mounted-asgi",
+            "asgi-with-static-gunicorn-w18",
+            "uvicorn",
+            "gunicorn-uvicornworker",
+        ]
+    env:
+      SERVED_BY: ${{ matrix.SERVED_BY }}
+      PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build the django image
+        run: docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/$PYTHON_VERSION.Dockerfile" ./
+      - name: Build the docker-compose stack
+        run: docker-compose docker-compose.yml --env-file env.vars up -d
+      - name: Check running containers
+        run: docker ps -a
+      - name: Run test suite
+        run: |
+          docker-compose --env-file ./env.vars up -d
+          docker-compose exec web bash -c ". /venv/bin/activate && python manage.py migrate"
+          docker-compose exec web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
+          docker-compose --env-file ./env.vars --profile load-test-run run load-test

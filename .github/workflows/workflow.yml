@@ -6,7 +6,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        PYTHON_VERSION: [3.6.13, 3.8.10]
+        PYTHON_VERSION: [3.7.10, 3.8.10]
         SERVED_BY: [
             "uvicorn-wsgimiddleware-with-cling",
             "gunicorn-eventlet",
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build the django image
-        run: docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/$PYTHON_VERSION.Dockerfile" ./
+        run: docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/Dockerfile" ./
       - name: Build the docker-compose stack
         run: docker-compose -f docker-compose.yml --env-file env.vars -d up
       - name: Check running containers

@@ -1,8 +1,8 @@
-FROM python:3.8.10-slim as base
+FROM python:${PYTHON_VERSION}-slim as base
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PYTHONUNBUFFERED=1
-RUN apt-get update && apt-get install -y gcc libffi-dev g++ libpq-dev python3-venv python3-wheel git curl telnet
+RUN apt-get update && apt-get install -y gcc libffi-dev g++ libpq-dev python3-venv python3-wheel git curl
 WORKDIR /app
 FROM base as builder
 ENV PIP_DEFAULT_TIMEOUT=100 \
@@ -10,14 +10,10 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_NO_CACHE_DIR=1
 RUN python -m venv /venv
 
-# doesn't work in 3.6.13?
-#RUN . /venv/bin/activate && pip install -U "pip"
-RUN . /venv/bin/activate && curl https://bootstrap.pypa.io/get-pip.py | python -
-
-RUN . /venv/bin/activate && pip install cython wheel
+RUN . /venv/bin/activate && pip install -U "pip"
 # copies the current directory to the container
 COPY . .
-RUN . /venv/bin/activate && pip install -r /app/requirements.txt
+RUN . /venv/bin/activate && pip install -r /app/requirements.${PYTHON_VERSION}.txt
 
 FROM base as final
 COPY --from=builder /venv /venv

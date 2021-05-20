@@ -33,7 +33,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: testdb
     image: postgres:latest
-    command: postgres -c shared_buffers=2GB -c max_connections=1600
+    command: postgres -c shared_buffers=512MB -c max_connections=200
     ports:
       - 5432:5432
     networks:

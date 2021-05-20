@@ -64,6 +64,10 @@ export let options = {
     //   'logged in successfully': ['p(99)<1500'], // 99% of requests must complete below 1.5s
     // },
 };
+console.log(`SERVED_BY: ${__ENV.SERVED_BY}`);
+console.log(`PYTHONV_VERSION: ${__ENV.PYTHON_VERSION}`);
+console.log(`options: `);
+console.log(JSON.stringify(options, null, 2));
 
 export default function () {
     let urlPart = reviewAppUrl || "http://web:8000";
@@ -74,6 +78,7 @@ export default function () {
     console.debug(res1);
     let csrf = res1.cookies.csrftoken[0].value;
     csrf || fail("FAILED TO SET CSRF");
+
     check(res1, {
         "has status 200": (r) => r.status === 200,
         "has cookie 'csrftoken'": (r) => r.cookies.csrftoken !== null,

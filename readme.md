@@ -2,7 +2,7 @@
 
 Feel free to open a PR if there is something missing, or if you'd like to see something tested.
 
-### what's this about?
+### What's this about?
 
 The purpose of the repo is to get a grasp on the state of various configuration setups, for **production ASGI django**, specifically migrating from django 2.2+ to django 3.2+, and layering in FastAPI.
 
@@ -14,7 +14,7 @@ The following knobs that can be configured:
 
 - python version
 - gunicorn
-- gevent (todo) / eventlet
+- gevent / eventlet
 - uvicorn
 - UvicornWorker
 - hypecorn (todo)
@@ -32,7 +32,7 @@ The following knobs that can be configured:
 - fastapi async (todo)
 
 
-### setup and run
+### setup
 
 ```bash
 pyenv install 3.8.10
@@ -40,28 +40,47 @@ pyenv local 3.8.10
 python -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
-export PYTHON_VERSION={3.6.13 | 3.8.10}
-export SERVED_BY={gunicorn-eventlet | gunicorn-uvicornworker | uvicorn | asgi-with-static | uvicorn-wsgimiddleware-with-cling}
+```
 
+Then modify the `env.vars` for the test scenario.
 
-docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/$PYTHON_VERSION.Dockerfile" ./
+```
+# PYTHON_VERSION={3.6.13 | 3.8.10}
+# SERVED_BY={gunicorn-eventlet | gunicorn-uvicornworker | 
+#           uvicorn | asgi-with-static | uvicorn-wsgimiddleware-with-cling |
+#           asgi-with-static-gunicorn-w18}
+#
+#
+# default example
 
-export PYTHON_VERSION=3.8.10 
-export SERVED_BY=gunicorn-eventlet
-docker-compose up
+PYTHON_VERSION=3.8.10
+SERVED_BY=asgi-with-static-gunicorn-w18
+```
 
+Build the django container:
+```
+export $(grep -v '^#' ./env.vars | xargs) && docker build -t "testdjango/web:$PYTHON_VERSION" -f "./docker/web/$PYTHON_VERSION.Dockerfile" ./
+```
+
+Start the environment, and migrate the dbs:
+
+```
+docker-compose --env-file ./env.vars up
 docker-compose exec web bash -c ". /venv/bin/activate && python manage.py migrate"
 docker-compose exec web bash -c ". /venv/bin/activate && python manage.py populate_test_db"
+```
 
-docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+Run the tests:
+
+```
+docker-compose --env-file ./env.vars --profile load-test-run run load-test
 ```
 
 Where are the knobs at the moment?
 
 - https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/docker/web
 - https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/testdjango
-- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/docker/grafana/.env
-
+- https://github.com/allen-munsch/benchmark-django-fastapi/tree/main/env.vars
 
 ### uses k6
 
@@ -91,9 +110,9 @@ MemAvailable:   20016776 kB
 ```
 export SERVED_BY=gunicorn-eventlet
 export PYTHON_VERSION=3.8.10
-docker-compose up
+docker-compose --env-file ./env.vars up
 
-06:54:46 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+06:54:46 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./env.vars --profile load-test-run run load-test
 Creating testdjango_load-test_run ... done
 
           /\      |‾‾| /‾‾/   /‾‾/   
@@ -148,7 +167,7 @@ default ✓ [======================================] 00/10 VUs  1m0s
 export SERVED_BY=gunicorn-uvicornworker
 docker-compose up
 
-06:57:06 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+06:57:06 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./env.vars --profile load-test-run run load-test
 Creating testdjango_load-test_run ... done
 
           /\      |‾‾| /‾‾/   /‾‾/   
@@ -202,9 +221,9 @@ default ✓ [======================================] 00/10 VUs  1m0s
 
 ```
 export SERVED_BY=uvicorn-wsgimiddleware-with-cling
-docker-compose up
+docker-compose --env-file ./env.vars up
 
-07:02:45 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+07:02:45 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./env.vars --profile load-test-run run load-test
 Creating testdjango_load-test_run ... done
 
           /\      |‾‾| /‾‾/   /‾‾/   
@@ -262,7 +281,7 @@ export SERVED_BY=gunicorn-uvicornworker
 echo test_try_python_async=true >> docker/grafana/.env
 
 
-07:51:57 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+07:51:57 (.venv) jmunsch@pop-os testdjango ±|master ✗|→ docker-compose --env-file --env-file ./env.vars --profile load-test-run run load-test
 Creating testdjango_load-test_run ... done
 
           /\      |‾‾| /‾‾/   /‾‾/   
@@ -318,7 +337,7 @@ default ✓ [======================================] 00/10 VUs  1m0s
 ```
 SERVED_BY=asgi-with-static
 
-07:51:46 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+07:51:46 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./env.vars --profile load-test-run run load-test
 WARNING: The PYTHON_VERSION variable is not set. Defaulting to a blank string.
 WARNING: The WITH_APP variable is not set. Defaulting to a blank string.
 Creating benchmark-django-fastapi_load-test_run ... done
@@ -375,7 +394,7 @@ default ✓ [======================================] 00/10 VUs  1m0s
 ```
 export SERVED_BY=fastapi-with-django-mounted-asgi
 
-08:01:52 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+08:01:52 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file --env-file ./env.vars --profile load-test-run run load-test
 WARNING: The WITH_APP variable is not set. Defaulting to a blank string.
 Creating benchmark-django-fastapi_load-test_run ... done
 
@@ -431,7 +450,7 @@ default ✓ [======================================] 00/10 VUs  1m0s
 export PYTHON_VERSION=3.8.10
 export SERVED_BY=asgi-with-static-gunicorn-w18
 
-08:03:12 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./docker/grafana/.env --profile load-test-run run load-test
+08:03:12 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ docker-compose --env-file ./env.vars --profile load-test-run run load-test
 WARNING: The PYTHON_VERSION variable is not set. Defaulting to a blank string.
 WARNING: The SERVED_BY variable is not set. Defaulting to a blank string.
 Creating benchmark-django-fastapi_load-test_run ... done

@@ -11,11 +11,11 @@ Cython==0.29.23
 daphne==3.0.2
 Django==3.2
 django-click==2.2.0
-dj-static==0.0.6
--e git+https://github.com/jordaneremieff/djantic.git@main#egg=djantic
+djantic==0.3.0
 dnspython==1.16.0
 eventlet==0.30.2
 fastapi==0.64.0
+gevent==21.1.2
 greenlet==1.1.0
 gunicorn==20.1.0
 h11==0.12.0
@@ -43,5 +43,5 @@ uvicorn==0.13.4
 uvloop==0.15.2
 watchgod==0.7
 websockets==8.1
+zope.event==4.5.0
 zope.interface==5.4.0
-fastapi==0.64.0

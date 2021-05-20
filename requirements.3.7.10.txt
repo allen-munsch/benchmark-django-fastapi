@@ -4,7 +4,7 @@ autobahn==21.3.1
 Automat==20.2.0
 cffi==1.14.5
 channels==3.0.3
-click==8.0.1
+click==7.1
 constantly==15.1.0
 cryptography==3.4.7
 Cython==0.29.23
@@ -12,8 +12,8 @@ daphne==3.0.2
 Django==3.2.3
 django-click==2.2.0
 djantic==0.3.0
-dnspython==2.1.0
-eventlet==0.31.0
+dnspython==1.15.0
+eventlet==0.30.2
 fastapi==0.65.1
 gevent==21.1.2
 greenlet==1.1.0

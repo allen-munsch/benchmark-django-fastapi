@@ -39,6 +39,18 @@ The following knobs that can be configured:
 
 Look at the artifacts zip of a test run: https://github.com/allen-munsch/benchmark-django-fastapi/actions
 
+According to:
+- https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#about-github-hosted-runners
+
+The github runners use `Standard_DS2_v2` azure instances:
+- https://docs.microsoft.com/en-us/azure/virtual-machines/dv2-dsv2-series#dsv2-series
+
+Which:
+
+| type | Size  | vCPU  | Memory: GiB | Temp storage (SSD) GiB | Max uncached disk throughput: IOPS/MBps | Expected network bandwidth (Mbps) |
+| :------------- | :-: | :-: | :--: | :--: | :----: | :----: |
+| Standard_DS2_v2 | 2 | 7 | 14 | 8 | 8000/64 (86) | 1500 |
+
 ### setup
 
 ```bash
@@ -100,7 +112,7 @@ See load_tests/
 - sends a POST login request
 - sends 2 GET api requests and returns a json responses of serialized data
 
-### Results:
+### Results from running locally:
 
 ```
 uname -a

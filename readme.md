@@ -6,7 +6,11 @@
 
 Feel free to open a PR if there is something missing, or if you'd like to see something tested.
 
-- DJANGO 3.2 ASGI and Uvicorn are not production ready : https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
+# DJANGO 3.2 ASGI and Uvicorn are not production ready 
+
+It would cost an extra $42,000/year to get the same performance using eventlet with the infrastructure tested.
+
+- https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
 
 ### What's this about?
 
@@ -61,7 +65,7 @@ SERVED_BY=asgi-with-static-gunicorn-w18
 ```
 
 
-~~SUCCESS SO FAR~~ (although this would cost an extra $3,500 per month ):
+~~SUCCESS SO FAR~~ FAILED (although this would cost an extra $3,500 per month ):
 
 ![Screenshot from 2021-05-20 18-56-03](https://user-images.githubusercontent.com/33908344/119063076-d2a58900-b99d-11eb-97d8-ed662e65737c.png)
 

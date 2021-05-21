@@ -74,7 +74,7 @@ Currently:
 - scaled down heroku web workers to 10 
 - 18 gunicorn workers each
 
-FAILED, reverted back.
+FAILED ON PRODUCTION, reverted back.
 
 ![Screenshot from 2021-05-21 15-01-17](https://user-images.githubusercontent.com/33908344/119198834-a0ecfa80-ba4f-11eb-8439-b9558b03b886.png)
 

@@ -35,6 +35,42 @@ The following knobs that can be configured:
 - fastapi sync (todo)
 - fastapi async (todo)
 
+
+### which version have I tried deploying to production
+
+FAILED:
+
+```
+# other attempt
+PYTHON_VERSION=3.8.10
+SERVED_BY=uvicorn-wsgimiddleware-with-cling
+```
+
+SUCCESS SO FAR:
+
+![Screenshot from 2021-05-20 18-56-03](https://user-images.githubusercontent.com/33908344/119063076-d2a58900-b99d-11eb-97d8-ed662e65737c.png)
+
+
+```
+PYTHON_VERSION=3.8.10
+SERVED_BY=asgi-with-static-gunicorn-w18
+```
+
+Started at:
+
+- 14 performance L heroku web worker instances 
+- 16 gunicorn workers each
+
+Currently:
+- scaled down heroku web workers to 10 
+- 18 gunicorn workers each
+
+```
+# previous performant production environment
+PYTHON_VERSION=3.6.13
+SERVED_BY=eventlet-gunicorn
+```
+
 ### tldr
 
 Look at the artifacts zip of a test run: https://github.com/allen-munsch/benchmark-django-fastapi/actions

@@ -45,3 +45,6 @@ watchgod==0.7
 websockets==8.1
 zope.event==4.5.0
 zope.interface==5.4.0
+a2wsgi==1.4.0
+Routes==2.5.1
+Werkzeug==2.0.1

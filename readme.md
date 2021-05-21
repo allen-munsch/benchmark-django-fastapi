@@ -6,6 +6,8 @@
 
 Feel free to open a PR if there is something missing, or if you'd like to see something tested.
 
+- DJANGO 3.2 ASGI and Uvicorn are not production ready : https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
+
 ### What's this about?
 
 The purpose of the repo is to get a grasp on the state of various configuration setups, for **production ASGI django**, specifically migrating from django 2.2+ to django 3.2+, and layering in FastAPI.

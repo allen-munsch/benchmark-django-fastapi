@@ -19,7 +19,8 @@ const password = __ENV.test_user_password;
 const reviewAppUrl = __ENV.test_review_app_url ? __ENV.test_review_app_url.replace(/\/+$/, "") : null;
 const isAsyncEndpoint = __ENV.test_try_python_async;
 const testScenario = __ENV.test_scenario_option || "easy";
-
+const testWithSlowApi = __ENV.test_with_slowapi;
+console.log(JSON.stringify(__ENV, null, 2))
 email ||
 fail("[__ENV.test_email is not defined, please add it to the 'load-test' environment in the docker-compose file]");
 password ||
@@ -72,6 +73,7 @@ console.log(JSON.stringify(options, null, 2));
 export default function () {
     let urlPart = reviewAppUrl || "http://web:8000";
     const loginUrl = `${urlPart}/admin/login/`;
+    const slowApiUrl = `${urlPart}/slowapi/slowapi/`;
     const collegeApi = `${urlPart}/${isAsyncEndpoint ? "async_" : ""}api/clowncollege/`;
     const troupeApi = `${urlPart}/${isAsyncEndpoint ? "async_" : ""}api/troupe/`;
     let res1 = http.get(loginUrl);
@@ -122,6 +124,15 @@ export default function () {
     let res4 = http.get(troupeApi, options);
     check(res4, apiChecks(troupeApi));
 
+    if (testWithSlowApi) {
+        //{"message":"Honk Honk"}
+        let resSlow = http.get(slowApiUrl, options);
+        check(resSlow, {
+            "status is 200": (r) => r.status === 200,
+            "Honk Honk": (r) => r.json().message === "Honk Honk",
+        });
+
+    }
 }
 
 

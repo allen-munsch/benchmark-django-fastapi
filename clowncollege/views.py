@@ -1,3 +1,4 @@
+import os
 import json
 
 from django.shortcuts import render
@@ -17,15 +18,18 @@ class TroupeSchema(ModelSchema):
         model = Troupe
 
 def clowncollege(request, *args, **kwargs):
-    cc = ClownCollegeSchema.from_django(ClownCollege.objects.all(), many=True)
-    data = [item.json() for item in cc]
-    j = {"results": data, "count": len(data), "next": "stubbed"}
+    # if os.environ['test_with_slowapi']:
+    #     cc = sync_to_async(ClownCollegeSchema.from_django)(ClownCollege.objects.all(), many=True)
+    # else:
+    #     cc = ClownCollegeSchema.from_django(ClownCollege.objects.all(), many=True)
+    # data = [item.json() for item in cc]
+    j = {"results": ['blah'], "count": len(['blah']), "next": "stubbed"}
     return HttpResponse(json.dumps(j), content_type='application/json')
 
 def troupe(request, *args, **kwargs):
-    t = TroupeSchema.from_django(Troupe.objects.all(), many=True)
-    data = [item.json() for item in t]
-    j = {"results": data, "count": len(data), "next": "stubbed"}
+    # t = TroupeSchema.from_django(Troupe.objects.all(), many=True)
+    # data = [item.json() for item in t]
+    j = {"results": ['blah'], "count": len(['blah']), "next": "stubbed"}
     return HttpResponse(json.dumps(j), content_type='application/json')
 
 @sync_to_async

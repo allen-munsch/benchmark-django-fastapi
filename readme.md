@@ -8,7 +8,7 @@ Feel free to open a PR if there is something missing, or if you'd like to see so
 
 # DJANGO 3.2 ASGI and Uvicorn are not production ready 
 
-It would cost an extra $42,000/year to get the same performance using eventlet with the infrastructure tested.
+It would cost an extra $42,000/year to get the same performance
 
 - https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
 

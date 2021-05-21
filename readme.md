@@ -38,6 +38,13 @@ The following knobs that can be configured:
 
 ### which version have I tried deploying to production
 
+previous performant production environment:
+
+```
+PYTHON_VERSION=3.6.13
+SERVED_BY=gunicorn-eventlet-w10
+```
+
 FAILED:
 
 ```
@@ -64,12 +71,6 @@ Started at:
 Currently:
 - scaled down heroku web workers to 10 
 - 18 gunicorn workers each
-
-```
-# previous performant production environment
-PYTHON_VERSION=3.6.13
-SERVED_BY=eventlet-gunicorn
-```
 
 ### tldr
 

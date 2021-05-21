@@ -55,7 +55,13 @@ PYTHON_VERSION=3.8.10
 SERVED_BY=uvicorn-wsgimiddleware-with-cling
 ```
 
-SUCCESS SO FAR (although this would cost an extra $3,500 per month ):
+```
+PYTHON_VERSION=3.8.10
+SERVED_BY=asgi-with-static-gunicorn-w18
+```
+
+
+~~SUCCESS SO FAR~~ (although this would cost an extra $3,500 per month ):
 
 ![Screenshot from 2021-05-20 18-56-03](https://user-images.githubusercontent.com/33908344/119063076-d2a58900-b99d-11eb-97d8-ed662e65737c.png)
 
@@ -74,7 +80,7 @@ Currently:
 - scaled down heroku web workers to 10 
 - 18 gunicorn workers each
 
-FAILED ON PRODUCTION, reverted back.
+FAILED ON PRODUCTION
 
 ![Screenshot from 2021-05-21 15-01-17](https://user-images.githubusercontent.com/33908344/119198834-a0ecfa80-ba4f-11eb-8439-b9558b03b886.png)
 

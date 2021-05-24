@@ -6,7 +6,14 @@
 
 Feel free to open a PR if there is something missing, or if you'd like to see something tested.
 
-- DJANGO 3.2 ASGI and Uvicorn are not production ready : https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
+- DJANGO 3.2 ASGI and Uvicorn are not production ready ( unless the majority of your codebase is async capable ) : https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
+
+CAVEAT:
+
+I did find that setting up fast api inside an existing WSGI application has less performance impact for gevent/eventlet code, so at least we can begin trying it out.
+
+see: `slowasgi/asgi.py`
+also: `testdjango/wsgi_with_slow_api_mounted.py`
 
 ### What's this about?
 

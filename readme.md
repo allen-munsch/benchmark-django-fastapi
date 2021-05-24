@@ -6,9 +6,11 @@
 
 Feel free to open a PR if there is something missing, or if you'd like to see something tested.
 
+# DJANGO 3.2 ASGI and Uvicorn are not production ready ( with caveats )
+
 - DJANGO 3.2 ASGI and Uvicorn are not production ready ( unless the majority of your codebase is async capable ) : https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
 
-CAVEAT:
+CAVEAT ( who gives a sh**, I just want to try out fastapi ):
 
 I did find that setting up fast api inside an existing WSGI application has less performance impact for gevent/eventlet code, so at least we can begin trying it out.
 
@@ -62,7 +64,13 @@ PYTHON_VERSION=3.8.10
 SERVED_BY=uvicorn-wsgimiddleware-with-cling
 ```
 
-SUCCESS SO FAR:
+```
+PYTHON_VERSION=3.8.10
+SERVED_BY=asgi-with-static-gunicorn-w18
+```
+
+
+~~SUCCESS SO FAR~~ FAILED (although this would cost an extra $3,500 per month ):
 
 ![Screenshot from 2021-05-20 18-56-03](https://user-images.githubusercontent.com/33908344/119063076-d2a58900-b99d-11eb-97d8-ed662e65737c.png)
 
@@ -80,6 +88,11 @@ Started at:
 Currently:
 - scaled down heroku web workers to 10 
 - 18 gunicorn workers each
+
+FAILED ON PRODUCTION
+
+![Screenshot from 2021-05-21 15-01-17](https://user-images.githubusercontent.com/33908344/119198834-a0ecfa80-ba4f-11eb-8439-b9558b03b886.png)
+
 
 ### tldr
 

@@ -8,14 +8,22 @@ Feel free to open a PR if there is something missing, or if you'd like to see so
 
 # DJANGO 3.2 ASGI and Uvicorn are not production ready ( with caveats )
 
-- DJANGO 3.2 ASGI and Uvicorn are not production ready ( unless the majority of your codebase is async capable ) : https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
+- https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
 
-CAVEAT ( who gives a sh**, I just want to try out fastapi ):
+CAVEAT 1:
 
-I did find that setting up fast api inside an existing WSGI application has less performance impact for gevent/eventlet code, so at least we can begin trying it out.
+- unless the majority of your codebase is async capable, and you're using an async ORM, etc
 
-see: `slowasgi/asgi.py`
-also: `testdjango/wsgi_with_slow_api_mounted.py`
+CAVEAT 2 ( who gives a sh**, I just want to try out fastapi ):
+
+Alright, alright. I also tried this.
+
+Keep the legacy code the same and run the WSGI app with ASGI mounted, using a werkzeug DispatcherMiddleware. That way all of the monkeypatched gevent/eventlet stuff basically works the same.
+
+- https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/slowasgi/asgi.py
+- https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/testdjango/wsgi_with_slow_api_mounted.py
+
+Seems like the least invasive stepwards way to get rolling with ASGI/Fastapi inside of a Django app.
 
 ### What's this about?
 

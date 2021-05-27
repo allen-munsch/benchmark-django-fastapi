@@ -148,6 +148,7 @@ Build the django container:
 export $(grep -v '^#' ./env.vars | xargs) && docker build \
 -t "testdjango/web:$PYTHON_VERSION" \
 --build-arg PYTHON_VERSION=$PYTHON_VERSION \
+--build-arg PYTHON_DEP_VARIATION=$PYTHON_DEP_VARIATION 
 -f "./docker/web/Dockerfile" ./
 ```
 

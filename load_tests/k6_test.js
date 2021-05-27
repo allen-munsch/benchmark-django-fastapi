@@ -21,7 +21,7 @@ const isAsyncEndpoint = __ENV.test_try_python_async;
 const testScenario = __ENV.test_scenario_option || "easy";
 const testWithSlowApi = __ENV.test_with_slowapi;
 const testOnlySlowApi = __ENV.test_only_slowapi;
-const testFastApiWithDjangoAsyncORM = false;
+const testFastApiWithDjangoAsyncORM = true;
 const DEBUG = false;
 
 console.log(JSON.stringify(__ENV, null, 2))
@@ -34,7 +34,7 @@ fail(
 
 let stageOptions = {
     "easy": [
-        { duration: "1m", target: 10 }, // below normal load
+        { duration: "1m", target: 100 }, // below normal load
     ],
     "medium": [
         { duration: "1m", target: 50 },
@@ -76,10 +76,10 @@ console.log(JSON.stringify(options, null, 2));
 
 export default function () {
     let urlPart = reviewAppUrl || "http://web:8000";
-    const loginUrl = `${urlPart}/admin/login/`;
     const slowApiUrl = `${urlPart}/slowapi/slowapi/`;
     const collegeApi = `${urlPart}/${isAsyncEndpoint ? "async_" : ""}api/clowncollege/`;
     const troupeApi = `${urlPart}/${isAsyncEndpoint ? "async_" : ""}api/troupe/`;
+    const loginUrl = `${urlPart}/admin/login/`;
     let res1 = http.get(loginUrl);
     console.debug(res1);
     let csrf = res1.cookies.csrftoken[0].value;
@@ -142,8 +142,8 @@ export default function () {
         check(resSlow, slowApiChecks(slowApiUrl));
 
         if (testFastApiWithDjangoAsyncORM) {
-            const withClosure = ''
-            const testUrl = `${slowApiUrl}django-async-orm/${withClosure}`
+            const withClosure = false;
+            const testUrl = `${slowApiUrl}django-async-orm/${withClosure ? 'closure/' : ''}`
             let resSlow = http.get(testUrl, options);
             let slowApiChecks = (apiName) => {
                 let obj = {};

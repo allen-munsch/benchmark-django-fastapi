@@ -1,5 +1,8 @@
 ARG PYTHON_VERSION="$PYTHON_VERSION"
 FROM python:${PYTHON_VERSION}-slim as base
+ARG PYTHON_VERSION
+ARG PYTHON_DEP_VARIATION
+RUN ok="BUILDING: python:$PYTHON_VERSION-slim\nREQUIREMENTS.TXT: requirements.$PYTHON_VERSION$PYTHON_DEP_VARIATION.txt" && echo -e $ok
 ENV PYTHONFAULTHANDLER=1 \
     PYTHONHASHSEED=random \
     PYTHONUNBUFFERED=1
@@ -14,7 +17,7 @@ RUN python -m venv /venv
 RUN . /venv/bin/activate && pip install -U "pip"
 # copies the current directory to the container
 COPY . .
-RUN . /venv/bin/activate && pip install -r /app/requirements.${PYTHON_VERSION}.txt
+RUN . /venv/bin/activate && pip install -r "/app/requirements.$PYTHON_VERSION$PYTHON_DEP_VARIATION.txt"
 
 FROM base as final
 COPY --from=builder /venv /venv

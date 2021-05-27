@@ -13,7 +13,7 @@ volumes:
 
 services:
   web:
-    image: "testdjango/web:${PYTHON_VERSION}"
+    image: "testdjango/web:${PYTHON_VERSION}${PYTHON_DEP_VARIATION}"
     command: ["./docker/web/docker-${SERVED_BY}-entrypoint.sh"]
     volumes:
       - ./:/app
@@ -60,6 +60,7 @@ services:
       - test_try_python_async=${test_try_python_async}
       - PYTHON_VERSION=${PYTHON_VERSION}
       - SERVED_BY=${SERVED_BY}
+      - PYTHON_DEP_VARIATION=${PYTHON_DEP_VARIATION}
       - test_with_slowapi=${test_with_slowapi}
       - test_only_slowapi=${test_only_slowapi}
   influxdb:

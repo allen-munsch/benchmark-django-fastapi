@@ -14,9 +14,7 @@ CAVEAT 1:
 
 - unless the majority of your codebase is async capable, and you're using an async ORM, etc
 
-CAVEAT 2 ( who gives a sh**, I just want to try out fastapi ):
-
-Alright, alright. I also tried this.
+CAVEAT 2 ( honk honk, I just want to try out fastapi ):
 
 Keep the legacy code the same and run the WSGI app with ASGI mounted, using a werkzeug DispatcherMiddleware. That way all of the monkeypatched gevent/eventlet stuff basically works the same.
 
@@ -24,6 +22,8 @@ Keep the legacy code the same and run the WSGI app with ASGI mounted, using a we
 - https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/testdjango/wsgi_with_slow_api_mounted.py
 
 Seems like the least invasive stepwards way to get rolling with ASGI/Fastapi inside of a Django app.
+
+Anyone have any suggestions here?
 
 ### What's this about?
 

@@ -48,3 +48,4 @@ zope.interface==5.4.0
 a2wsgi==1.4.0
 Routes==2.5.1
 Werkzeug==2.0.1
+django-async-orm==0.1.5

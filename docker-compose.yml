@@ -26,6 +26,7 @@ services:
       - DATABASE_URL_HOST=postgres
       - WITH_APP=${SERVED_BY}
       - test_with_slowapi=${test_with_slowapi}
+      - test_only_slowapi=${test_only_slowapi}
     depends_on:
       - postgres
   postgres:
@@ -59,6 +60,8 @@ services:
       - test_try_python_async=${test_try_python_async}
       - PYTHON_VERSION=${PYTHON_VERSION}
       - SERVED_BY=${SERVED_BY}
+      - test_with_slowapi=${test_with_slowapi}
+      - test_only_slowapi=${test_only_slowapi}
   influxdb:
     profiles:
       - load-test

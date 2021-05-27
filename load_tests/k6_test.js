@@ -20,6 +20,10 @@ const reviewAppUrl = __ENV.test_review_app_url ? __ENV.test_review_app_url.repla
 const isAsyncEndpoint = __ENV.test_try_python_async;
 const testScenario = __ENV.test_scenario_option || "easy";
 const testWithSlowApi = __ENV.test_with_slowapi;
+const testOnlySlowApi = __ENV.test_only_slowapi;
+const testFastApiWithDjangoAsyncORM = false;
+const DEBUG = false;
+
 console.log(JSON.stringify(__ENV, null, 2))
 email ||
 fail("[__ENV.test_email is not defined, please add it to the 'load-test' environment in the docker-compose file]");
@@ -104,33 +108,55 @@ export default function () {
         redirects: 3,
     };
 
-    let res2 = http.get(loginUrl, options);
-    check(res2, {
-        "status is 200": (r) => r.status === 200,
-    });
+    if (testOnlySlowApi === "null") {
+        let res2 = http.get(loginUrl, options);
+        check(res2, {
+            "status is 200": (r) => r.status === 200,
+        });
 
-    const apiChecks = (apiName) => {
-        let obj = {};
-        obj[`${apiName}: status is 200`] = (r) => r.status === 200;
-        obj[`${apiName}: count != null`] = (r) => r.json().count != null;
-        obj[`${apiName}: next url exists`] = (r) => !!r.json().next;
-        obj[`${apiName}: has results`] = (r) => r.json().results.length > 0;
-        return obj;
-    };
+        const apiChecks = (apiName) => {
+            let obj = {};
+            obj[`${apiName}: status is 200`] = (r) => r.status === 200;
+            obj[`${apiName}: count != null`] = (r) => r.json().count != null;
+            obj[`${apiName}: next url exists`] = (r) => !!r.json().next;
+            obj[`${apiName}: has results`] = (r) => r.json().results.length > 0;
+            return obj;
+        };
 
-    let res3 = http.get(collegeApi, options);
-    check(res3, apiChecks(collegeApi));
+        let res3 = http.get(collegeApi, options);
+        check(res3, apiChecks(collegeApi));
 
-    let res4 = http.get(troupeApi, options);
-    check(res4, apiChecks(troupeApi));
+        let res4 = http.get(troupeApi, options);
+        check(res4, apiChecks(troupeApi));
+    }
 
-    if (testWithSlowApi) {
+    if (testWithSlowApi || testOnlySlowApi === "honk") {
         //{"message":"Honk Honk"}
         let resSlow = http.get(slowApiUrl, options);
-        check(resSlow, {
-            "status is 200": (r) => r.status === 200,
-            "Honk Honk": (r) => r.json().message === "Honk Honk",
-        });
+        let slowApiChecks = (apiName) => {
+            let obj = {};
+            obj[`${apiName}: status is 200`] = (r) => r.status === 200;
+            obj["Honk Honk"] = (r) => r.json().message === "Honk Honk";
+            return obj;
+        };
+        check(resSlow, slowApiChecks(slowApiUrl));
+
+        if (testFastApiWithDjangoAsyncORM) {
+            const withClosure = ''
+            const testUrl = `${slowApiUrl}django-async-orm/${withClosure}`
+            let resSlow = http.get(testUrl, options);
+            let slowApiChecks = (apiName) => {
+                let obj = {};
+                obj[`${apiName}: status is 200`] = (r) => {
+                    if (DEBUG) {
+                        console.log(JSON.stringify(r, null, 2))
+                    }
+                    return r.status === 200;
+                }
+                return obj;
+            };
+            check(resSlow, slowApiChecks(testUrl));
+        }
 
     }
 }

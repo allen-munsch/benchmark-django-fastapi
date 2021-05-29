@@ -8,6 +8,7 @@ Feel free to open a PR if there is something missing, or if you'd like to see so
 
 # DJANGO 3.2 ASGI and Uvicorn are not production ready ( with caveats )
 
+- https://en.wikipedia.org/wiki/Monty_Python%27s_Flying_Circus
 - https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
 
 CAVEAT 1:

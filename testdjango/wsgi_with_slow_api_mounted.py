@@ -11,3 +11,4 @@ legacy_app = get_wsgi_application()
 
 application = DispatcherMiddleware(legacy_app,
                                    {'/slowapi': slow_app})
+

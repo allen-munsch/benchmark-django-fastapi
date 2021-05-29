@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['web', '*']
 
+GEVENT_DJANGO_ASYNC_ORM = False
 
 # Application definition
 

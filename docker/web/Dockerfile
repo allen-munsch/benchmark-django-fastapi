@@ -17,6 +17,7 @@ RUN python -m venv /venv
 RUN . /venv/bin/activate && pip install -U "pip"
 # copies the current directory to the container
 COPY . .
+RUN . /venv/bin/activate && pip install wheel
 RUN . /venv/bin/activate && pip install -r "/app/requirements.$PYTHON_VERSION$PYTHON_DEP_VARIATION.txt"
 
 FROM base as final

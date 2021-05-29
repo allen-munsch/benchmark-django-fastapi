@@ -31,17 +31,20 @@ services:
       - postgres
   postgres:
     environment:
-      POSTGRES_USER: testdb
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: testdb
+      - POSTGRES_USER=testdb
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=testdb
+      - pg_shared_buffers=${pg_shared_buffers}
+      - pg_max_connections=${pg_max_connections}
     image: postgres:latest
-    command: postgres -c shared_buffers=512MB -c max_connections=200
+    command: ["postgres", "-c", "shared_buffers=${pg_shared_buffers}", "-c", "max_connections=${pg_max_connections}"]
     ports:
       - 5432:5432
     networks:
       - test-this-net
     volumes:
       - postgres:/var/lib/postgresql/data
+
   load-test:
     profiles:
       - load-test-run

@@ -23,7 +23,10 @@ Keep the legacy code the same and run the WSGI app with ASGI mounted, using a we
 
 Seems like the least invasive stepwards way to get rolling with ASGI/Fastapi inside of a Django app.
 
-Anyone have any suggestions here?
+Anyone have any suggestions here? (hmm, looks like all the database stuff, would still be blocking?)
+
+- https://github.com/rednaks/django-async-orm/discussions/9
+- https://github.com/rednaks/django-async-orm/discussions/6
 
 ### What's this about?
 

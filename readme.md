@@ -28,6 +28,61 @@ Anyone have any suggestions here? (hmm, looks like all the database stuff, would
 - https://github.com/rednaks/django-async-orm/discussions/9
 - https://github.com/rednaks/django-async-orm/discussions/6
 
+
+```
+PYTHON_DEP_VARIATION="_django-async-orm.0.1.8"
+SERVED_BY=gunicorn-eventlet-slowapi-wsgi-w2
+
+ab -v all -n 10 -c 10 127.0.0.1:8000/slowapi/slowapi/sleep/ 
+
+04:22:18 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ ab -v all -n 10 -c 10 127.0.0.1:8000/slowapi/slowapi/sleep/
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient).....done
+
+
+Server Software:        gunicorn
+Server Hostname:        127.0.0.1
+Server Port:            8000
+
+Document Path:          /slowapi/slowapi/sleep/
+Document Length:        143 bytes
+
+Concurrency Level:      10
+Time taken for tests:   6.064 seconds
+Complete requests:      10
+Failed requests:        0
+Total transferred:      2890 bytes
+HTML transferred:       1430 bytes
+Requests per second:    1.65 [#/sec] (mean)
+Time per request:       6063.948 [ms] (mean)
+Time per request:       606.395 [ms] (mean, across all concurrent requests)
+Transfer rate:          0.47 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       0
+Processing:  1008 4248 1243.8   5056    5056
+Waiting:     1007 4247 1243.5   5054    5055
+Total:       1008 4248 1243.9   5056    5057
+
+Percentage of the requests served within a certain time (ms)
+  50%   5056
+  66%   5056
+  75%   5056
+  80%   5056
+  90%   5057
+  95%   5057
+  98%   5057
+  99%   5057
+ 100%   5057 (longest request)
+
+
+time seq 1 10 | xargs -n1 -P 10 curl 127.0.0.1:8000/slowapi/slowapi/sleep/
+```
+
 ### What's this about?
 
 The purpose of the repo is to get a grasp on the state of various configuration setups, for **production ASGI django**, specifically migrating from django 2.2+ to django 3.2+, and layering in FastAPI.

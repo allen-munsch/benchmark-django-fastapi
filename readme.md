@@ -8,6 +8,7 @@ Feel free to open a PR if there is something missing, or if you'd like to see so
 
 # DJANGO 3.2 ASGI and Uvicorn are not production ready ( with caveats )
 
+- https://en.wikipedia.org/wiki/Monty_Python%27s_Flying_Circus
 - https://forum.djangoproject.com/t/django-3-2-asgi-uvicorn-is-not-production-ready/8003
 
 CAVEAT 1:
@@ -16,17 +17,72 @@ CAVEAT 1:
 
 CAVEAT 2 ( honk honk, I just want to try out fastapi ):
 
-Keep the legacy code the same and run the WSGI app with ASGI mounted, using a werkzeug DispatcherMiddleware. That way all of the monkeypatched gevent/eventlet stuff basically works the same.
+Keep the legacy code the same and run the WSGI app with ASGI mounted, using a werkzeug DispatcherMiddleware. That way all of the monkeypatched gevent/eventlet stuff basically works the same. ( hmm, although apparently any of the ASGI code that uses sync_to_async around the ORM doesn't use stuff like psycogreen? not sure really, doesn't seem like it? )
 
 - https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/slowasgi/asgi.py
 - https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/testdjango/wsgi_with_slow_api_mounted.py
 
-Seems like the least invasive stepwards way to get rolling with ASGI/Fastapi inside of a Django app.
+Seems like the least invasive stepwards way to get rolling with ASGI/Fastapi inside of a Django app?
 
 Anyone have any suggestions here? (hmm, looks like all the database stuff, would still be blocking?)
 
 - https://github.com/rednaks/django-async-orm/discussions/9
 - https://github.com/rednaks/django-async-orm/discussions/6
+
+
+```
+PYTHON_DEP_VARIATION="_django-async-orm.0.1.8"
+SERVED_BY=gunicorn-eventlet-slowapi-wsgi-w2
+
+ab -v all -n 10 -c 10 127.0.0.1:8000/slowapi/slowapi/sleep/ 
+
+04:22:18 jmunsch@pop-os benchmark-django-fastapi ±|main ✗|→ ab -v all -n 10 -c 10 127.0.0.1:8000/slowapi/slowapi/sleep/
+This is ApacheBench, Version 2.3 <$Revision: 1843412 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking 127.0.0.1 (be patient).....done
+
+
+Server Software:        gunicorn
+Server Hostname:        127.0.0.1
+Server Port:            8000
+
+Document Path:          /slowapi/slowapi/sleep/
+Document Length:        143 bytes
+
+Concurrency Level:      10
+Time taken for tests:   6.064 seconds
+Complete requests:      10
+Failed requests:        0
+Total transferred:      2890 bytes
+HTML transferred:       1430 bytes
+Requests per second:    1.65 [#/sec] (mean)
+Time per request:       6063.948 [ms] (mean)
+Time per request:       606.395 [ms] (mean, across all concurrent requests)
+Transfer rate:          0.47 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.1      0       0
+Processing:  1008 4248 1243.8   5056    5056
+Waiting:     1007 4247 1243.5   5054    5055
+Total:       1008 4248 1243.9   5056    5057
+
+Percentage of the requests served within a certain time (ms)
+  50%   5056
+  66%   5056
+  75%   5056
+  80%   5056
+  90%   5057
+  95%   5057
+  98%   5057
+  99%   5057
+ 100%   5057 (longest request)
+
+
+time seq 1 10 | xargs -n1 -P 10 curl 127.0.0.1:8000/slowapi/slowapi/sleep/
+```
 
 ### What's this about?
 

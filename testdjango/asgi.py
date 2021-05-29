@@ -12,5 +12,6 @@ import os
 from django.core.asgi import get_asgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'testdjango.settings')
+print(f"RUNNING: __name__: {__name__}")
 
 application = get_asgi_application()

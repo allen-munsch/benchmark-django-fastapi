@@ -17,6 +17,12 @@ class TroupeSchema(ModelSchema):
     class Config:
         model = Troupe
 
+async def clowncollege_with_django_async_orm(request, *args, **kwargs):
+    cc = ClownCollegeSchema.from_django(await ClownCollege.objects.prefetch_related('troupe').async_all(), many=True)
+    data = [item.json() for item in cc]
+    j = {"results": data, "count": len(data), "next": "stubbed"}
+    return HttpResponse(json.dumps(j), content_type='application/json')
+
 def clowncollege(request, *args, **kwargs):
     # if os.environ['test_with_slowapi']:
     #     cc = sync_to_async(ClownCollegeSchema.from_django)(ClownCollege.objects.all(), many=True)

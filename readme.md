@@ -19,6 +19,7 @@ CAVEAT 2 ( honk honk, I just want to try out fastapi ):
 
 Keep the legacy code the same and run the WSGI app with ASGI mounted, using a werkzeug DispatcherMiddleware. That way all of the monkeypatched gevent/eventlet stuff basically works the same. ( hmm, although apparently any of the ASGI code that uses sync_to_async around the ORM doesn't use stuff like psycogreen? not sure really, doesn't seem like it? )
 
+- https://github.com/django/asgiref/issues/264
 - https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/slowasgi/asgi.py
 - https://github.com/allen-munsch/benchmark-django-fastapi/blob/main/testdjango/wsgi_with_slow_api_mounted.py
 
